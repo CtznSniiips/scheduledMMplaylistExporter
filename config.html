@@ -32,7 +32,7 @@
 
 <style>
     .info {
-        color: var(--text-secondary, #999);
+        color: var(--text-secondary, #666);
         font-size: 12px;
         margin-top: 5px;
         margin-bottom: 10px;
@@ -77,7 +77,7 @@
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
-        color: var(--text-primary, #ddd);
+        color: var(--text-primary, #333);
     }
     
     .checkbox-label {
@@ -93,9 +93,32 @@
     }
     
     select {
-        background-color: var(--input-bg, #2a2a2a);
-        color: var(--text-primary, #ddd);
-        border: 1px solid var(--border-color, #555);
+        background-color: var(--input-bg, #fff);
+        color: var(--text-primary, #000);
+        border: 1px solid var(--border-color, #ccc);
         padding: 4px;
+    }
+    
+    /* Dark theme support using prefers-color-scheme */
+    @media (prefers-color-scheme: dark) {
+        .info {
+            color: #999;
+        }
+        
+        .path-input-group input[type="text"] {
+            background-color: #2a2a2a;
+            color: #ddd;
+            border-color: #555;
+        }
+        
+        label {
+            color: #ddd;
+        }
+        
+        select {
+            background-color: #2a2a2a;
+            color: #ddd;
+            border-color: #555;
+        }
     }
 </style>
