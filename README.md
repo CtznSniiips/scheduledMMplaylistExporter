@@ -24,12 +24,12 @@ A MediaMonkey addon that allows you to export selected playlists (or all playlis
 ### Configuration
 
 1. In MediaMonkey, go to **Tools > Options > Addons**
-2. Find "Playlist Exporter" in the list
+2. Find "Playlist Exporter" in the list and click the **Options** button
 3. Configure the following settings:
-   - **Export Folder**: Select the folder where M3U files will be saved
-   - **Export All Playlists**: Check to export all playlists, uncheck to export only selected ones
+   - **Export Folder**: Select the folder where M3U files will be saved (use Browse button)
    - **Use Forward Slashes (Unix-style)**: Check for forward slashes (/) or uncheck for backslashes (\)
-   - **Selected Playlists**: Enter comma-separated playlist IDs when "Export All Playlists" is unchecked
+   - **Export All Playlists**: Check to export all playlists, uncheck to select specific ones
+   - **Select Playlists to Export**: When "Export All Playlists" is unchecked, select specific playlists (hold Ctrl/Cmd to select multiple)
 4. Click **OK** to save the configuration
 
 ### Exporting Playlists
