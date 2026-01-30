@@ -58,7 +58,7 @@ window.configInfo = {
                         }
                     }
                 } catch (e) {
-                    app.alert('Error selecting folder: ' + e.message);
+                    alert('Error selecting folder: ' + e.message);
                 }
             };
         }
@@ -114,7 +114,7 @@ window.configInfo = {
         
         // Validate export path
         if (!this.config.exportPath) {
-            app.alert('Please select an export path');
+            alert('Please select an export path');
             return false;
         }
         
@@ -128,12 +128,12 @@ window.configInfo = {
             }
         } catch (e) {
             // If we can't check the path, show a warning but allow continuation
-            app.alert('Warning: Could not verify export path. Error: ' + e.message);
+            alert('Warning: Could not verify export path. Error: ' + e.message);
         }
         
         // Validate playlist selection
         if (!this.config.exportAllPlaylists && !selectedPlaylists) {
-            app.alert('Please select at least one playlist or check "Export All Playlists"');
+            alert('Please select at least one playlist or check "Export All Playlists"');
             return false;
         }
         
