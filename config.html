@@ -1,8 +1,8 @@
 <div class="uiRows">
     <div>
-        <label>Export Folder</label>
+        <label for="txtExportPath">Export Folder</label>
         <div class="path-input-group">
-            <input type="text" id="txtExportPath" data-id="txtExportPath" placeholder="Select folder for exported playlists" title="Select folder for exported playlists" />
+            <input type="text" id="txtExportPath" data-id="txtExportPath" placeholder="Select folder for exported playlists" title="Select folder for exported playlists" aria-label="Export folder path" />
             <button id="btnBrowse" class="btn-secondary">Browse...</button>
         </div>
         <div class="info">M3U files will be saved to this folder</div>
@@ -43,10 +43,6 @@
         display: flex;
         gap: 10px;
         margin-bottom: 5px;
-    }
-    
-    .path-input-group > div {
-        flex: 1;
     }
     
     .path-input-group input[type="text"] {
