@@ -29,18 +29,18 @@ window.configInfo = {
             txtExportPath: pnlDiv.querySelector('[data-id="txtExportPath"]')
         };
         
-        // Set checkbox states
-        if (this.UI.chbExportAll && this.UI.chbExportAll.controlClass) {
-            this.UI.chbExportAll.controlClass.checked = this.config.exportAllPlaylists;
+        // Set checkbox states (direct access to checkbox elements)
+        if (this.UI.chbExportAll) {
+            this.UI.chbExportAll.checked = this.config.exportAllPlaylists;
         }
         
-        if (this.UI.chbUseForwardSlash && this.UI.chbUseForwardSlash.controlClass) {
-            this.UI.chbUseForwardSlash.controlClass.checked = this.config.useForwardSlash;
+        if (this.UI.chbUseForwardSlash) {
+            this.UI.chbUseForwardSlash.checked = this.config.useForwardSlash;
         }
         
-        // Set export path
-        if (this.UI.txtExportPath && this.UI.txtExportPath.controlClass) {
-            this.UI.txtExportPath.controlClass.value = this.config.exportPath;
+        // Set export path (direct access to input element)
+        if (this.UI.txtExportPath) {
+            this.UI.txtExportPath.value = this.config.exportPath;
         }
         
         // Setup browse button
@@ -53,8 +53,8 @@ window.configInfo = {
                     
                     if (folder) {
                         var folderPath = folder.Self.Path;
-                        if (window.configInfo.UI.txtExportPath && window.configInfo.UI.txtExportPath.controlClass) {
-                            window.configInfo.UI.txtExportPath.controlClass.value = folderPath;
+                        if (window.configInfo.UI.txtExportPath) {
+                            window.configInfo.UI.txtExportPath.value = folderPath;
                         }
                     }
                 } catch (e) {
@@ -68,8 +68,8 @@ window.configInfo = {
         
         // Setup export all checkbox change handler
         var self = this;
-        if (this.UI.chbExportAll && this.UI.chbExportAll.controlClass) {
-            this.UI.chbExportAll.controlClass.addEventListener('change', function() {
+        if (this.UI.chbExportAll) {
+            this.UI.chbExportAll.addEventListener('change', function() {
                 self.togglePlaylistSelection(pnlDiv);
             });
         }
@@ -84,17 +84,17 @@ window.configInfo = {
      * @param {Object} addon - Addon information object
      */
     save: function (pnlDiv, addon) {
-        // Get current UI state
-        if (this.UI.txtExportPath && this.UI.txtExportPath.controlClass) {
-            this.config.exportPath = this.UI.txtExportPath.controlClass.value;
+        // Get current UI state (direct access to HTML elements)
+        if (this.UI.txtExportPath) {
+            this.config.exportPath = this.UI.txtExportPath.value;
         }
         
-        if (this.UI.chbExportAll && this.UI.chbExportAll.controlClass) {
-            this.config.exportAllPlaylists = this.UI.chbExportAll.controlClass.checked;
+        if (this.UI.chbExportAll) {
+            this.config.exportAllPlaylists = this.UI.chbExportAll.checked;
         }
         
-        if (this.UI.chbUseForwardSlash && this.UI.chbUseForwardSlash.controlClass) {
-            this.config.useForwardSlash = this.UI.chbUseForwardSlash.controlClass.checked;
+        if (this.UI.chbUseForwardSlash) {
+            this.config.useForwardSlash = this.UI.chbUseForwardSlash.checked;
         }
         
         // Get selected playlists
@@ -199,14 +199,14 @@ window.configInfo = {
         var playlistDiv = pnlDiv.querySelector('#playlistSelectionDiv');
         if (!playlistDiv) return;
         
-        // Check if UI element exists and has the controlClass property
-        if (!this.UI.chbExportAll || !this.UI.chbExportAll.controlClass) {
+        // Check if UI element exists (direct access to checkbox element)
+        if (!this.UI.chbExportAll) {
             // If UI element not available, default to hiding the playlist selection
             playlistDiv.style.display = 'none';
             return;
         }
         
-        var exportAll = this.UI.chbExportAll.controlClass.checked;
+        var exportAll = this.UI.chbExportAll.checked;
         
         if (exportAll) {
             playlistDiv.style.display = 'none';
