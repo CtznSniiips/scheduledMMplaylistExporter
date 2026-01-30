@@ -1,0 +1,27 @@
+{
+  "id": "scheduledMMplaylistExporter",
+  "type": "general",
+  "version": "1.0.0",
+  "title": "Scheduled Playlist Exporter",
+  "author": "CtznSniiips",
+  "description": "Export selected playlists to M3U files with configurable path format",
+  "minAppVersion": "5.0",
+  "actions": [
+    {
+      "id": "exportPlaylists",
+      "title": "Export Playlists",
+      "type": "command",
+      "category": "playlists"
+    },
+    {
+      "id": "configureExport",
+      "title": "Configure Playlist Export",
+      "type": "command",
+      "category": "playlists"
+    }
+  ],
+  "options": {
+    "enabled": true,
+    "sheet": "options.html"
+  }
+}
