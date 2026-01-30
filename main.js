@@ -101,7 +101,7 @@ function exportPlaylist(playlist, exportPath, useForwardSlash) {
     var safeFilename = playlist.name.replace(/[<>:"/\\|?*]/g, '_').trim();
     
     // Handle edge cases
-    if (!safeFilename || safeFilename === '') {
+    if (!safeFilename) {
       safeFilename = 'playlist_' + playlist.id;
     }
     // Remove trailing dots and spaces (Windows limitation)
@@ -131,8 +131,8 @@ function exportSelectedPlaylists() {
   var config = getConfig();
   
   // Validate export path
-  if (!config.exportPath || config.exportPath === '') {
-    app.alert('Please configure the export path first using "Configure Playlist Export"');
+  if (!config.exportPath) {
+    app.alert('Please configure the export path first using the Options page');
     return;
   }
   
@@ -158,7 +158,7 @@ function exportSelectedPlaylists() {
     playlistsToExport = allPlaylists;
   } else {
     // Parse selected playlist IDs
-    if (config.selectedPlaylists && config.selectedPlaylists !== '') {
+    if (config.selectedPlaylists) {
       var selectedIds = config.selectedPlaylists.split(',');
       for (var i = 0; i < allPlaylists.length; i++) {
         for (var j = 0; j < selectedIds.length; j++) {

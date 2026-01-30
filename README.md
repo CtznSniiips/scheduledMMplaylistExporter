@@ -1,4 +1,4 @@
-# Scheduled Playlist Exporter for MediaMonkey
+# Playlist Exporter for MediaMonkey
 
 A MediaMonkey addon that allows you to export selected playlists (or all playlists) to M3U files with configurable path formats.
 
@@ -24,8 +24,8 @@ A MediaMonkey addon that allows you to export selected playlists (or all playlis
 ### Configuration
 
 1. In MediaMonkey, go to **Tools > Options > Addons**
-2. Find "Scheduled Playlist Exporter" in the list
-3. Click the **Options** button or run "Configure Playlist Export" action
+2. Find "Playlist Exporter" in the list
+3. Click the **Options** button to configure settings
 4. Configure the following settings:
    - **Export Path**: Select the folder where M3U files will be saved
    - **Path Format**: Choose forward slashes (/) for Linux-style or backslashes (\) for Windows-style
@@ -40,7 +40,7 @@ A MediaMonkey addon that allows you to export selected playlists (or all playlis
 - Click the **Export Now** button on the options page
 
 **Method 2: From MediaMonkey Menu**
-- Go to **Tools > Extensions** (or wherever addons are accessed)
+- Go to **Tools > Extensions** (or wherever addon actions are accessed)
 - Run the **Export Playlists** action
 
 ### Output
@@ -86,3 +86,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Support
 
 For issues, feature requests, or contributions, please visit the GitHub repository.
+
+## Future Enhancements
+
+Possible features for future versions:
+- Scheduled/automated export functionality
+- Export to additional playlist formats (PLS, XSPF, etc.)
+- Batch operations and export templates
