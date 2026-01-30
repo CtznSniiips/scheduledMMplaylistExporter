@@ -48,11 +48,10 @@ window.configInfo = {
         if (btnBrowse) {
             btnBrowse.onclick = function() {
                 try {
-                    var shell = new ActiveXObject("Shell.Application");
-                    var folder = shell.BrowseForFolder(0, "Select folder for exported playlists:", 0);
+                    // Use MediaMonkey's built-in folder browser dialog
+                    var folderPath = app.browseFolderDialog('Select folder for exported playlists', window.configInfo.config.exportPath || '');
                     
-                    if (folder) {
-                        var folderPath = folder.Self.Path;
+                    if (folderPath) {
                         if (window.configInfo.UI.txtExportPath) {
                             window.configInfo.UI.txtExportPath.value = folderPath;
                         }

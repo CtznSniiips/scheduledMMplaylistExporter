@@ -52,13 +52,13 @@
         border-radius: 3px;
         font-size: 14px;
         background-color: var(--input-bg, #fff);
-        color: var(--text-primary, #000);
+        color: var(--text-primary, #333);
     }
     
     .btn-secondary {
         padding: 8px 15px;
-        background-color: #666;
-        color: white;
+        background-color: var(--button-bg, #666);
+        color: var(--button-text, #fff);
         border: none;
         border-radius: 3px;
         cursor: pointer;
@@ -66,7 +66,7 @@
     }
     
     .btn-secondary:hover {
-        background-color: #555;
+        background-color: var(--button-bg-hover, #555);
     }
     
     #playlistSelectionDiv {
@@ -94,7 +94,40 @@
     
     select {
         background-color: var(--input-bg, #fff);
-        color: var(--text-primary, #000);
+        color: var(--text-primary, #333);
         border: 1px solid var(--border-color, #ccc);
+        padding: 4px;
+    }
+    
+    /* Dark theme support using prefers-color-scheme */
+    @media (prefers-color-scheme: dark) {
+        .info {
+            color: #999;
+        }
+        
+        .path-input-group input[type="text"] {
+            background-color: #2a2a2a;
+            color: #ddd;
+            border-color: #555;
+        }
+        
+        label {
+            color: #ddd;
+        }
+        
+        select {
+            background-color: #2a2a2a;
+            color: #ddd;
+            border-color: #555;
+        }
+        
+        .btn-secondary {
+            background-color: #555;
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #666;
+        }
     }
 </style>
