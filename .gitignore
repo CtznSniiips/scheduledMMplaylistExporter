@@ -1,0 +1,20 @@
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# Build artifacts (if any are added later)
+dist/
+build/
+node_modules/
+
+# Test exports (if created during testing)
+test_exports/
