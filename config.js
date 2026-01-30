@@ -22,15 +22,26 @@ window.configInfo = {
             exportSelectedPlaylists: app.getValue('exportSelectedPlaylists', '')
         };
         
-        // Get all UI elements
-        this.UI = getAllUIElements(pnlDiv);
+        // Get all UI elements by querying with data-id attributes
+        this.UI = {
+            chbExportAll: pnlDiv.querySelector('[data-id="chbExportAll"]'),
+            chbUseForwardSlash: pnlDiv.querySelector('[data-id="chbUseForwardSlash"]'),
+            txtExportPath: pnlDiv.querySelector('[data-id="txtExportPath"]')
+        };
         
         // Set checkbox states
-        this.UI.chbExportAll.controlClass.checked = this.config.exportAllPlaylists;
-        this.UI.chbUseForwardSlash.controlClass.checked = this.config.useForwardSlash;
+        if (this.UI.chbExportAll && this.UI.chbExportAll.controlClass) {
+            this.UI.chbExportAll.controlClass.checked = this.config.exportAllPlaylists;
+        }
+        
+        if (this.UI.chbUseForwardSlash && this.UI.chbUseForwardSlash.controlClass) {
+            this.UI.chbUseForwardSlash.controlClass.checked = this.config.useForwardSlash;
+        }
         
         // Set export path
-        this.UI.txtExportPath.controlClass.value = this.config.exportPath;
+        if (this.UI.txtExportPath && this.UI.txtExportPath.controlClass) {
+            this.UI.txtExportPath.controlClass.value = this.config.exportPath;
+        }
         
         // Setup browse button
         var btnBrowse = pnlDiv.querySelector('#btnBrowse');
@@ -42,7 +53,9 @@ window.configInfo = {
                     
                     if (folder) {
                         var folderPath = folder.Self.Path;
-                        window.configInfo.UI.txtExportPath.controlClass.value = folderPath;
+                        if (window.configInfo.UI.txtExportPath && window.configInfo.UI.txtExportPath.controlClass) {
+                            window.configInfo.UI.txtExportPath.controlClass.value = folderPath;
+                        }
                     }
                 } catch (e) {
                     app.alert('Error selecting folder: ' + e.message);
@@ -55,9 +68,11 @@ window.configInfo = {
         
         // Setup export all checkbox change handler
         var self = this;
-        this.UI.chbExportAll.controlClass.addEventListener('change', function() {
-            self.togglePlaylistSelection(pnlDiv);
-        });
+        if (this.UI.chbExportAll && this.UI.chbExportAll.controlClass) {
+            this.UI.chbExportAll.controlClass.addEventListener('change', function() {
+                self.togglePlaylistSelection(pnlDiv);
+            });
+        }
         
         // Initial toggle of playlist selection
         this.togglePlaylistSelection(pnlDiv);
@@ -70,9 +85,17 @@ window.configInfo = {
      */
     save: function (pnlDiv, addon) {
         // Get current UI state
-        this.config.exportPath = this.UI.txtExportPath.controlClass.value;
-        this.config.exportAllPlaylists = this.UI.chbExportAll.controlClass.checked;
-        this.config.useForwardSlash = this.UI.chbUseForwardSlash.controlClass.checked;
+        if (this.UI.txtExportPath && this.UI.txtExportPath.controlClass) {
+            this.config.exportPath = this.UI.txtExportPath.controlClass.value;
+        }
+        
+        if (this.UI.chbExportAll && this.UI.chbExportAll.controlClass) {
+            this.config.exportAllPlaylists = this.UI.chbExportAll.controlClass.checked;
+        }
+        
+        if (this.UI.chbUseForwardSlash && this.UI.chbUseForwardSlash.controlClass) {
+            this.config.useForwardSlash = this.UI.chbUseForwardSlash.controlClass.checked;
+        }
         
         // Get selected playlists
         var playlistSelect = pnlDiv.querySelector('#playlists');
@@ -104,7 +127,8 @@ window.configInfo = {
                 }
             }
         } catch (e) {
-            // If we can't check, just continue
+            // If we can't check the path, show a warning but allow continuation
+            app.alert('Warning: Could not verify export path. Error: ' + e.message);
         }
         
         // Validate playlist selection
@@ -174,6 +198,13 @@ window.configInfo = {
     togglePlaylistSelection: function(pnlDiv) {
         var playlistDiv = pnlDiv.querySelector('#playlistSelectionDiv');
         if (!playlistDiv) return;
+        
+        // Check if UI element exists and has the controlClass property
+        if (!this.UI.chbExportAll || !this.UI.chbExportAll.controlClass) {
+            // If UI element not available, default to hiding the playlist selection
+            playlistDiv.style.display = 'none';
+            return;
+        }
         
         var exportAll = this.UI.chbExportAll.controlClass.checked;
         

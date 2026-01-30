@@ -72,7 +72,8 @@ C:\Music\Artist\Album\Track2.mp3
 
 - `info.json` - Addon manifest file
 - `main.js` - Main addon script with export functionality
-- `options.html` - Configuration UI page
+- `config.js` - Configuration script with load/save functions
+- `config.html` - Configuration UI template
 
 ## License
 
