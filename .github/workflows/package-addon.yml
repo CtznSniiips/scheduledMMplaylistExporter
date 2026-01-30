@@ -1,0 +1,58 @@
+name: Package MediaMonkey Addon
+
+on:
+  push:
+    tags:
+      - 'v*'
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Get version from info.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r '.version' info.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+      
+      - name: Create addon package
+        run: |
+          # Create a temporary directory for the package
+          mkdir -p package
+          
+          # Copy addon files to package directory
+          cp info.json package/
+          cp main.js package/
+          cp options.html package/
+          cp LICENSE package/
+          cp README.md package/
+          
+          # Create the .mmip file (ZIP format)
+          cd package
+          zip -r ../playlistExporter-${{ steps.get_version.outputs.version }}.mmip *
+          cd ..
+          
+          # Verify the package was created
+          ls -lh playlistExporter-${{ steps.get_version.outputs.version }}.mmip
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: playlistExporter-${{ steps.get_version.outputs.version }}
+          path: playlistExporter-${{ steps.get_version.outputs.version }}.mmip
+      
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: playlistExporter-${{ steps.get_version.outputs.version }}.mmip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
