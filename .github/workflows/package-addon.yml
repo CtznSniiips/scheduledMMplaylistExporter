@@ -1,0 +1,101 @@
+name: Package MediaMonkey Addon
+
+on:
+  # Allows the workflow to be triggered manually
+  workflow_dispatch:
+  # Trigger on push to main/master branch
+  push:
+    branches:
+      - main
+      - master
+  # Trigger on release creation
+  release:
+    types: [created]
+
+env:
+  # Name of the addon (used for the .mmip filename)
+  EXTENSION_FILE_NAME: playlistExporter
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set version
+        run: |
+          # Read version from info.json
+          VERSION=$(jq -r '.version' info.json)
+          if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
+            echo "Error: Could not extract version from info.json"
+            exit 1
+          fi
+          
+          # Parse version components
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          PATCH=$(echo $VERSION | cut -d. -f3)
+          
+          # Use GitHub run number as patch version for auto-incrementing
+          NEW_VERSION="${MAJOR}.${MINOR}.${GITHUB_RUN_NUMBER}"
+          
+          echo "Original version: $VERSION"
+          echo "New version: $NEW_VERSION"
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          
+          # Update info.json with new version
+          jq --arg version "$NEW_VERSION" '.version = $version' info.json > info.json.tmp
+          mv info.json.tmp info.json
+          
+          echo "Updated info.json:"
+          cat info.json
+      
+      - name: Clean up addon directory
+        run: |
+          # Remove files that shouldn't be included in the addon package
+          rm -rf .git
+          rm -rf .github
+          rm -f .gitignore
+          
+          echo "Remaining files to be packaged:"
+          ls -la
+      
+      - name: Create addon package
+        run: |
+          # Create the .mmip file (ZIP format) from current directory
+          zip -r ${{ env.EXTENSION_FILE_NAME }}${{ env.VERSION }}.mmip .
+          
+          # Verify the package was created
+          ls -lh ${{ env.EXTENSION_FILE_NAME }}${{ env.VERSION }}.mmip
+          
+          # Show contents of the package
+          echo "Package contents:"
+          unzip -l ${{ env.EXTENSION_FILE_NAME }}${{ env.VERSION }}.mmip
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: addon
+          path: ${{ env.EXTENSION_FILE_NAME }}${{ env.VERSION }}.mmip
+      
+      - name: Create draft release
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          draft: true
+          prerelease: false
+          files: ${{ env.EXTENSION_FILE_NAME }}${{ env.VERSION }}.mmip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload to existing release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.EXTENSION_FILE_NAME }}${{ env.VERSION }}.mmip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
