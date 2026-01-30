@@ -24,24 +24,19 @@ A MediaMonkey addon that allows you to export selected playlists (or all playlis
 ### Configuration
 
 1. In MediaMonkey, go to **Tools > Options > Addons**
-2. Find "Playlist Exporter" in the list
-3. Click the **Options** button to configure settings
-4. Configure the following settings:
-   - **Export Path**: Select the folder where M3U files will be saved
-   - **Path Format**: Choose forward slashes (/) for Linux-style or backslashes (\) for Windows-style
-   - **Playlist Selection**: 
-     - Check "Export All Playlists" to export all playlists
-     - Uncheck to select specific playlists from the list (hold Ctrl/Cmd to select multiple)
-5. Click **Save Configuration**
+2. Find "Playlist Exporter" in the list and click the **Options** button
+3. Configure the following settings:
+   - **Export Folder**: Select the folder where M3U files will be saved (use Browse button)
+   - **Use Forward Slashes (Unix-style)**: Check for forward slashes (/) or uncheck for backslashes (\)
+   - **Export All Playlists**: Check to export all playlists, uncheck to select specific ones
+   - **Select Playlists to Export**: When "Export All Playlists" is unchecked, select specific playlists (hold Ctrl/Cmd to select multiple)
+4. Click **OK** to save the configuration
 
 ### Exporting Playlists
 
-**Method 1: From Options Page**
-- Click the **Export Now** button on the options page
-
-**Method 2: From MediaMonkey Menu**
-- Go to **Tools > Extensions** (or wherever addon actions are accessed)
-- Run the **Export Playlists** action
+To export playlists:
+- Use the **Export Playlists** action from the Tools menu or assigned keyboard shortcut
+- Or access it through the playlist context menu if configured
 
 ### Output
 
@@ -77,7 +72,8 @@ C:\Music\Artist\Album\Track2.mp3
 
 - `info.json` - Addon manifest file
 - `main.js` - Main addon script with export functionality
-- `options.html` - Configuration UI page
+- `config.js` - Configuration script with load/save functions
+- `config.html` - Configuration UI template
 
 ## License
 
