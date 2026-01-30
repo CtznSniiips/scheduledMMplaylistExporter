@@ -32,7 +32,7 @@
 
 <style>
     .info {
-        color: var(--text-secondary, #666);
+        color: var(--text-secondary, #999);
         font-size: 12px;
         margin-top: 5px;
         margin-bottom: 10px;
@@ -52,13 +52,13 @@
         border-radius: 3px;
         font-size: 14px;
         background-color: var(--input-bg, #fff);
-        color: var(--text-primary, #000);
+        color: var(--text-primary, #333);
     }
     
     .btn-secondary {
         padding: 8px 15px;
-        background-color: #666;
-        color: white;
+        background-color: var(--button-bg, #666);
+        color: var(--button-text, #fff);
         border: none;
         border-radius: 3px;
         cursor: pointer;
@@ -66,7 +66,7 @@
     }
     
     .btn-secondary:hover {
-        background-color: #555;
+        background-color: var(--button-bg-hover, #555);
     }
     
     #playlistSelectionDiv {
@@ -77,7 +77,7 @@
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
-        color: var(--text-primary, #333);
+        color: var(--text-primary, #ddd);
     }
     
     .checkbox-label {
@@ -93,8 +93,9 @@
     }
     
     select {
-        background-color: var(--input-bg, #fff);
-        color: var(--text-primary, #000);
-        border: 1px solid var(--border-color, #ccc);
+        background-color: var(--input-bg, #2a2a2a);
+        color: var(--text-primary, #ddd);
+        border: 1px solid var(--border-color, #555);
+        padding: 4px;
     }
 </style>
