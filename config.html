@@ -1,19 +1,25 @@
 <div class="uiRows">
     <div>
-        <label>Export Folder</label>
+        <label for="txtExportPath">Export Folder</label>
         <div class="path-input-group">
-            <div data-id="txtExportPath" data-control-class="Textbox" data-tip="Select folder for exported playlists"></div>
+            <input type="text" id="txtExportPath" data-id="txtExportPath" placeholder="Select folder for exported playlists" title="Select folder for exported playlists" aria-label="Export folder path" />
             <button id="btnBrowse" class="btn-secondary">Browse...</button>
         </div>
         <div class="info">M3U files will be saved to this folder</div>
     </div>
     <div>
         <label>Path Format</label>
-        <div data-id="chbUseForwardSlash" data-control-class="Checkbox" data-tip="Use forward slashes (/) for Unix-style paths, or uncheck for backslashes (\) for Windows-style">Use Forward Slashes (Unix-style)</div>
+        <label class="checkbox-label">
+            <input type="checkbox" id="chbUseForwardSlash" data-id="chbUseForwardSlash" title="Use forward slashes (/) for Unix-style paths, or uncheck for backslashes (\) for Windows-style" />
+            Use Forward Slashes (Unix-style)
+        </label>
         <div class="info">Example: C:/Music/song.mp3 vs C:\Music\song.mp3</div>
     </div>
     <div>
-        <div data-id="chbExportAll" data-control-class="Checkbox" data-tip="Export all playlists or only selected ones">Export All Playlists</div>
+        <label class="checkbox-label">
+            <input type="checkbox" id="chbExportAll" data-id="chbExportAll" title="Export all playlists or only selected ones" />
+            Export All Playlists
+        </label>
     </div>
     <div id="playlistSelectionDiv">
         <label>Select Playlists to Export</label>
@@ -39,8 +45,12 @@
         margin-bottom: 5px;
     }
     
-    .path-input-group > div {
+    .path-input-group input[type="text"] {
         flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 14px;
     }
     
     .btn-secondary {
@@ -66,5 +76,17 @@
         margin-bottom: 5px;
         font-weight: bold;
         color: #333;
+    }
+    
+    .checkbox-label {
+        display: inline-flex;
+        align-items: center;
+        font-weight: normal;
+        cursor: pointer;
+        gap: 8px;
+    }
+    
+    .checkbox-label input[type="checkbox"] {
+        cursor: pointer;
     }
 </style>
