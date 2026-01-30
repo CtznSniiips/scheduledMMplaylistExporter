@@ -195,7 +195,9 @@
         // Show/hide playlist selection based on exportAll
         togglePlaylistSelection();
       } catch (e) {
-        console.error('Error loading config:', e);
+        if (typeof console !== 'undefined' && console.error) {
+          console.error('Error loading config:', e);
+        }
       }
     }
     
@@ -233,7 +235,9 @@
         
         stmt.finalize();
       } catch (e) {
-        console.error('Error loading playlists:', e);
+        if (typeof console !== 'undefined' && console.error) {
+          console.error('Error loading playlists:', e);
+        }
       }
     }
     
@@ -265,7 +269,7 @@
     }
     
     // Save settings
-    function saveSettings() {
+    function saveSettings(silent) {
       try {
         var exportPath = document.getElementById('exportPath').value;
         var exportAll = document.getElementById('exportAll').checked;
@@ -287,21 +291,21 @@
         // Validate export path
         if (!exportPath) {
           alert('Please select an export path');
-          return;
+          return false;
         }
         
         // Check if path exists
         var fso = new ActiveXObject("Scripting.FileSystemObject");
         if (!fso.FolderExists(exportPath)) {
           if (!confirm('The selected path does not exist. Do you want to continue anyway?')) {
-            return;
+            return false;
           }
         }
         
         // Validate playlist selection
         if (!exportAll && !selectedPlaylists) {
           alert('Please select at least one playlist or check "Export All Playlists"');
-          return;
+          return false;
         }
         
         // Save configuration
@@ -310,17 +314,24 @@
         app.setValue('useForwardSlash', useForwardSlash);
         app.setValue('exportSelectedPlaylists', selectedPlaylists);
         
-        alert('Configuration saved successfully!');
+        if (!silent) {
+          alert('Configuration saved successfully!');
+        }
+        return true;
       } catch (e) {
         alert('Error saving configuration: ' + e.message);
+        return false;
       }
     }
     
     // Export now
     function exportNow() {
       try {
-        // Save settings first
-        saveSettings();
+        // Save settings first (silently)
+        if (!saveSettings(true)) {
+          // If saveSettings returns false, validation failed
+          return;
+        }
         
         // Execute export action
         if (app.actions && app.actions.exportPlaylists) {

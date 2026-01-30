@@ -11,12 +11,6 @@ function initializeAddon() {
       exportSelectedPlaylists();
     }
   };
-  
-  app.actions.configureExport = {
-    execute: function() {
-      showConfigDialog();
-    }
-  };
 }
 
 // Get addon configuration
@@ -104,7 +98,20 @@ function exportPlaylist(playlist, exportPath, useForwardSlash) {
     }
     
     // Sanitize playlist name for filename
-    var safeFilename = playlist.name.replace(/[<>:"/\\|?*]/g, '_');
+    var safeFilename = playlist.name.replace(/[<>:"/\\|?*]/g, '_').trim();
+    
+    // Handle edge cases
+    if (!safeFilename || safeFilename === '') {
+      safeFilename = 'playlist_' + playlist.id;
+    }
+    // Remove trailing dots and spaces (Windows limitation)
+    safeFilename = safeFilename.replace(/[.\s]+$/, '');
+    // Check for reserved Windows names
+    var reservedNames = ['CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9'];
+    if (reservedNames.indexOf(safeFilename.toUpperCase()) >= 0) {
+      safeFilename = '_' + safeFilename;
+    }
+    
     var filePath = exportPath + '\\' + safeFilename + '.m3u';
     
     // Write to file
@@ -151,12 +158,14 @@ function exportSelectedPlaylists() {
     playlistsToExport = allPlaylists;
   } else {
     // Parse selected playlist IDs
-    var selectedIds = config.selectedPlaylists.split(',');
-    for (var i = 0; i < allPlaylists.length; i++) {
-      for (var j = 0; j < selectedIds.length; j++) {
-        if (allPlaylists[i].id.toString() === selectedIds[j].trim()) {
-          playlistsToExport.push(allPlaylists[i]);
-          break;
+    if (config.selectedPlaylists && config.selectedPlaylists !== '') {
+      var selectedIds = config.selectedPlaylists.split(',');
+      for (var i = 0; i < allPlaylists.length; i++) {
+        for (var j = 0; j < selectedIds.length; j++) {
+          if (allPlaylists[i].id.toString() === selectedIds[j].trim()) {
+            playlistsToExport.push(allPlaylists[i]);
+            break;
+          }
         }
       }
     }
@@ -182,68 +191,22 @@ function exportSelectedPlaylists() {
   
   // Show results
   var message = 'Export complete!\n\n';
-  message += 'Successfully exported: ' + successCount + ' playlist(s)\n';
+  message += 'Successfully exported: ' + successCount + (successCount === 1 ? ' playlist' : ' playlists') + '\n';
   
   if (errors.length > 0) {
-    message += '\nErrors:\n' + errors.join('\n');
+    message += '\nErrors encountered: ' + errors.length + '\n';
+    // Show first 5 errors to avoid overwhelming the user
+    var errorsToShow = errors.slice(0, 5);
+    message += errorsToShow.join('\n');
+    if (errors.length > 5) {
+      message += '\n... and ' + (errors.length - 5) + ' more error(s)';
+    }
   }
   
   app.alert(message);
 }
 
-// Show configuration dialog
-function showConfigDialog() {
-  var config = getConfig();
-  var allPlaylists = getAllPlaylists();
-  
-  // Create dialog HTML
-  var html = '<html><head><title>Configure Playlist Export</title></head><body>';
-  html += '<h2>Playlist Export Configuration</h2>';
-  
-  // Export path selection
-  html += '<div><label>Export Path:</label><br/>';
-  html += '<input type="text" id="exportPath" value="' + config.exportPath + '" style="width:300px;"/>';
-  html += '<button onclick="selectFolder()">Browse...</button></div><br/>';
-  
-  // Path format selection
-  html += '<div><label>Path Format:</label><br/>';
-  html += '<input type="radio" id="forwardSlash" name="pathFormat" value="forward"' + (config.useForwardSlash ? ' checked' : '') + '/>';
-  html += '<label for="forwardSlash">Forward slashes (/) - Linux-style</label><br/>';
-  html += '<input type="radio" id="backSlash" name="pathFormat" value="back"' + (!config.useForwardSlash ? ' checked' : '') + '/>';
-  html += '<label for="backSlash">Back slashes (\\) - Windows-style</label></div><br/>';
-  
-  // Playlist selection
-  html += '<div><input type="checkbox" id="exportAll"' + (config.exportAll ? ' checked' : '') + ' onclick="togglePlaylistSelection()"/>';
-  html += '<label for="exportAll">Export All Playlists</label></div><br/>';
-  
-  html += '<div id="playlistSelection"' + (config.exportAll ? ' style="display:none;"' : '') + '>';
-  html += '<label>Select Playlists to Export:</label><br/>';
-  html += '<select id="playlists" multiple size="10" style="width:300px;">';
-  
-  var selectedIds = config.selectedPlaylists.split(',');
-  for (var i = 0; i < allPlaylists.length; i++) {
-    var selected = false;
-    for (var j = 0; j < selectedIds.length; j++) {
-      if (allPlaylists[i].id.toString() === selectedIds[j].trim()) {
-        selected = true;
-        break;
-      }
-    }
-    html += '<option value="' + allPlaylists[i].id + '"' + (selected ? ' selected' : '') + '>';
-    html += allPlaylists[i].name + '</option>';
-  }
-  
-  html += '</select></div><br/>';
-  
-  // Buttons
-  html += '<button onclick="saveSettings()">Save</button> ';
-  html += '<button onclick="window.close()">Cancel</button>';
-  
-  html += '</body></html>';
-  
-  // Show dialog (this is a simplified version - actual implementation would use MediaMonkey's dialog system)
-  app.alert('Configuration dialog would be shown here. Please use the options page instead.');
-}
+
 
 // Initialize the addon when MediaMonkey loads it
 initializeAddon();

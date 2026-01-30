@@ -12,12 +12,6 @@
       "title": "Export Playlists",
       "type": "command",
       "category": "playlists"
-    },
-    {
-      "id": "configureExport",
-      "title": "Configure Playlist Export",
-      "type": "command",
-      "category": "playlists"
     }
   ],
   "options": {
