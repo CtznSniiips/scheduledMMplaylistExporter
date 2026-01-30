@@ -14,8 +14,30 @@
       "category": "playlists"
     }
   ],
-  "options": {
-    "enabled": true,
-    "sheet": "options.html"
-  }
+  "addonConfig": [
+    {
+      "key": "exportPath",
+      "label": "Export Folder",
+      "type": "folder",
+      "defaultValue": ""
+    },
+    {
+      "key": "exportAllPlaylists",
+      "label": "Export All Playlists",
+      "type": "boolean",
+      "defaultValue": true
+    },
+    {
+      "key": "useForwardSlash",
+      "label": "Use Forward Slashes (Unix-style)",
+      "type": "boolean",
+      "defaultValue": true
+    },
+    {
+      "key": "exportSelectedPlaylists",
+      "label": "Selected Playlists (comma-separated IDs)",
+      "type": "string",
+      "defaultValue": ""
+    }
+  ]
 }
